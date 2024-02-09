@@ -9,7 +9,7 @@ import {
   Settings,
   Trash,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
@@ -21,8 +21,14 @@ import DocumentList from "./DocumentList";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
 import TrashBox from "./TrashBox";
+import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
+import Navbar from "./Navbar";
 
 const Navigation = () => {
+  const search = useSearch();
+  const settings = useSettings();
+  const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const create = useMutation(api.documents.create);
@@ -147,17 +153,8 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item
-            label="Search"
-            icon={Search}
-            isSearch
-            onClick={() => console.log("search")}
-          />
-          <Item
-            label="Settings"
-            icon={Settings}
-            onClick={() => console.log("settings")}
-          />
+          <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
+          <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New Page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
@@ -191,15 +188,19 @@ const Navigation = () => {
           isMobile && "left-0 w-full"
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
-            <MenuIcon
-              onClick={resetWidth}
-              className="w-6 h-6 text-muted-foreground"
-              role="button"
-            />
-          )}
-        </nav>
+        {!!params.documentId ? (
+          <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+        ) : (
+          <nav className="bg-transparent px-3 py-2 w-full">
+            {isCollapsed && (
+              <MenuIcon
+                onClick={resetWidth}
+                className="w-6 h-6 text-muted-foreground"
+                role="button"
+              />
+            )}
+          </nav>
+        )}
       </div>
     </>
   );

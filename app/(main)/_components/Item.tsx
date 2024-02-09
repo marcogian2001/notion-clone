@@ -111,7 +111,7 @@ const Item = (props: ItemProps) => {
     >
       {!!id && (
         <div
-          className="h-full rounded-sm hover:bg-neutral-300 dark:bg-neutral-600 mr-1"
+          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
           role="button"
           onClick={handleExpand}
         >
@@ -164,7 +164,7 @@ const Item = (props: ItemProps) => {
           <div
             role="button"
             onClick={onCreate}
-            className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:bg-neutral-600"
+            className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 hover:dark:bg-neutral-600"
           >
             <Plus className="w-4 h-4 text-muted-foreground" />
           </div>
